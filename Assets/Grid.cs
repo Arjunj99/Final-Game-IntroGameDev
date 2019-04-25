@@ -14,6 +14,7 @@ public class Grid {
     }
 
     public void RandomStart() {
+        //Debug.Log(GameManager.Instance.possibleSpawns.Count);
         int rand = (int)Random.Range(0f, GameManager.Instance.possibleSpawns.Count);
         CurrentPosition = GameManager.Instance.possibleSpawns[rand];
     }

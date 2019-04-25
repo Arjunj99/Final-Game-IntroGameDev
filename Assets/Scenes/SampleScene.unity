@@ -223,6 +223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1549a1a775b2d4c73b4cecf553e3b113, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainCamera: {fileID: 519420028}
   currentPosition: {x: 0, y: 0}
   enemyPosition: {x: 0, y: 0}
   testTile: {fileID: 319839551623624365, guid: 891a96dc13ddb46a99f761f3c595ebd6, type: 3}

@@ -14,8 +14,8 @@ public class GameManager : MonoBehaviour {
     public Dictionary<int, Dictionary<int, Vector2Int>> Tiles = new Dictionary<int, Dictionary<int, Vector2Int>>();
 
 
-    public const int HEIGHT = 4;
-    public const int WIDTH = 4;
+    public const int HEIGHT = 3;
+    public const int WIDTH = 5;
 
 
 

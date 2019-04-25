@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GridDisplay : MonoBehaviour {
+    public GameObject mainCamera;
     public Vector2Int currentPosition;
     public Vector2Int enemyPosition;
     public GameObject testTile;
@@ -12,7 +13,7 @@ public class GridDisplay : MonoBehaviour {
     public Grid grid;
     private GameObject player;
 
-    void Awake() {
+    void Start() {
         grid = new Grid(currentPosition, enemyPosition, tiles);
         grid.Tiles = new GameObject[GameManager.WIDTH, GameManager.HEIGHT];
         displayTiles = new GameObject[GameManager.WIDTH, GameManager.HEIGHT];
@@ -30,22 +31,19 @@ public class GridDisplay : MonoBehaviour {
                 GameObject newTile = Instantiate(testTile);
                 newTile.transform.parent = gridHolder.transform;
                 newTile.transform.localPosition = new Vector2
-                    (GameManager.WIDTH - i - 0,
-                     GameManager.HEIGHT - j - 0);
+                    (GameManager.WIDTH - i * 3.5f - 0,
+                     GameManager.HEIGHT - j * 3.5f - 0);
                 displayTiles[i, j] = newTile;
             }
         }
         player = Instantiate(GameManager.Instance.player);
+        mainCamera.transform.parent = player.transform;
         //GameObject player = Instantiate(GameManager.Instance.player);
         grid.Tiles[grid.CurrentPosition.x, grid.CurrentPosition.y] = GameManager.Instance.player;
         Debug.Log("instant");
         player.transform.localPosition = displayTiles[grid.CurrentPosition.x, grid.CurrentPosition.y].transform.localPosition;
     }
 
-    // Start is called before the first frame update
-    void Start() {
-
-    }
 
     // Update is called once per frame
     void Update() {
