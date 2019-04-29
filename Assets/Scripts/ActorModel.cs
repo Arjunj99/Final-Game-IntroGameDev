@@ -4,10 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class ActorModel
-{
-    [System.NonSerialized]public ActorView View;
-
+public class ActorModel {
+    [System.NonSerialized] public ActorView View;
     public Guid ID;
     public Point Location = null;
     public ThingTypes Type;
@@ -16,17 +14,15 @@ public class ActorModel
     
     public List<Traits> TraitList = new List<Traits>();
     [NonSerialized]public Dictionary<EventType,List<Trait>> Listeners = new Dictionary<EventType, List<Trait>>();
-    
+
     //When I first spawn a world thing I need to run setup on it so that it does basic stuff like place itself
-    public ActorModel(TileModel start,ThingTypes thingType)
-    {
+    public ActorModel(TileModel start,ThingTypes thingType) {
         ID = Guid.NewGuid();
         Type = thingType;
         SetLocation(start);
         if (!ModelManager.AllThings.ContainsKey(ID))
             ModelManager.AllThings.Add(ID,this);
-        switch (thingType)
-        {
+        switch (thingType) {
             case ThingTypes.Skeleton:
                 Species = God.Library.GetRandomMonster().Type;
                 AddTrait(Traits.Monster);

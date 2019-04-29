@@ -152,9 +152,9 @@ MonoBehaviour:
   - A: 4
     B: {fileID: 21300000, guid: e6c53a426157c4a21b40463e74f81012, type: 3}
   - A: 5
-    B: {fileID: 21300000, guid: 88243d1d5a5cd4cdfba311530c4fd6ca, type: 3}
+    B: {fileID: 21300000, guid: 59483da7129ac43e9b70dd1346ac9d7a, type: 3}
   - A: 6
-    B: {fileID: 21300000, guid: 85205c720232641cc8f51cb3757ff181, type: 3}
+    B: {fileID: 21300000, guid: e231eb263373649bfa7aaf396ed39f34, type: 3}
   Thing: {fileID: 1954681941224178990, guid: 6f8164f2a69b7441ebfa7a32799ff7a9, type: 3}
   Monsters:
   - {fileID: 11400000, guid: 3fb164b6a9ed342bcb8f7d8dbe46475e, type: 2}

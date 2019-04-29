@@ -15,8 +15,7 @@ public class TileModel
     public int X;
     public int Y;
     
-    public TileModel(int x, int y)
-    {
+    public TileModel(int x, int y) {
         ID = Guid.NewGuid();
         X = x;
         Y = y;

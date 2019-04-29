@@ -12,9 +12,9 @@ public class ActorView : MonoBehaviour
     
     void Update()
     {
-
-//        if (Input.GetKeyDown(KeyCode.Space))
-//            transform.Dance();
+        IncreaseVision(this);
+        //        if (Input.GetKeyDown(KeyCode.Space))
+        //            transform.Dance();
     }
 
     //When I first spawn a world thing I need to run setup on it so that it does basic stuff like place itself
@@ -37,6 +37,7 @@ public class ActorView : MonoBehaviour
     {
         
         transform.SetParent(tile.transform);
+
         transform.localPosition = Vector3.zero;
     }
 
@@ -46,5 +47,22 @@ public class ActorView : MonoBehaviour
         gameObject.SetActive(false);
 //        God.GSM.AllThings.Remove(this);
     }
-    
+
+    public void IncreaseVision(ActorView a)
+    {
+        if (Model.Type == ThingTypes.Player) {
+            a.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+        }
+
+        //if (Model.Type == ThingTypes.Skeleton.)
+
+
+
+        //    gameObject.transform.Find("Player") == true)
+        //{
+        //    t.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+        //    Debug.Log(gameObject.transform.localPosition);
+        //}
+    }
+
 }

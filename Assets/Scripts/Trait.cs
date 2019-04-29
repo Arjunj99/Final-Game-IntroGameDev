@@ -81,6 +81,8 @@ public class KeyTrait : Trait
                     bumper.HasKey = true;
                     who.LeaveTile(who.GetLocation());
                     bumper.SetLocation(loc);
+                    who.View.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+                    who.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
                     God.C.AddAction(new GainKeyAction(bumper,who));
                     
                 }
@@ -140,8 +142,10 @@ public class DoorTrait : Trait
          switch (msg.Type)
          {
              case EventType.GetBumped:
-                 ActorModel bumper = msg.Source;
-                 if (bumper.HasKey)
+                ActorModel bumper = msg.Source;
+                who.View.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+                who.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+                if (bumper.HasKey)
                  {
                      God.C.AddAction(new UseDoorAction(bumper,who));
                      ModelManager.SaveGame();
@@ -203,6 +207,8 @@ public class MonsterTrait : Trait
         {
             case EventType.GetBumped:
                 God.C.AddAction(new BumpAction(msg.Source,who.Location.x,who.Location.y));
+                who.View.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+                who.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
                 msg.Source.TakeMsg(new EventMsg(EventType.TakeDmg,who,God.Library.GetMonster(who.Species).Damage));
                 who.Despawn();
                 return;
@@ -262,6 +268,8 @@ public class ScoreTrait : Trait
                 if (bumper.Type == ThingTypes.Player)
                 {
                     TileModel loc = who.GetLocation();
+                    who.View.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+                    who.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
                     God.C.AddAction(new GetScoreAction(bumper,who));
                     who.Despawn();
                     ModelManager.ChangeScore(1);

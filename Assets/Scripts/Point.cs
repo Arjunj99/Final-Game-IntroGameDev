@@ -5,7 +5,8 @@ using UnityEngine;
 
 [Serializable]
 public class Point{
-    public int x;public int y;
+    public int x;
+    public int y;
   
     public Point (int X, int Y){x = X;y = Y;}
   

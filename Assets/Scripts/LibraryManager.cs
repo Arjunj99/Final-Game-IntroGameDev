@@ -22,10 +22,16 @@ public class LibraryManager : MonoBehaviour
         new ScoreTrait().Setup();
         new PlayerTrait().Setup();
     }
-    
+
+    void Update()
+    {
+        
+    }
+
     public TileView SpawnTile(TileModel t)
     {
         TileView r = Instantiate(TileP).GetComponent<TileView>();
+        //r.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 0);
         r.Setup(t);
         return r;
     }
@@ -33,6 +39,7 @@ public class LibraryManager : MonoBehaviour
     public ActorView SpawnThing(ActorModel m)
     {
         ActorView r = Instantiate(Thing).GetComponent<ActorView>();
+        //r.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 0);
         r.Setup(m);
         return r;
     }
@@ -55,6 +62,8 @@ public class LibraryManager : MonoBehaviour
         return ThingDict[t];
     }
 }
+
+
 
 [System.Serializable]
 public struct SpawnableEntry
