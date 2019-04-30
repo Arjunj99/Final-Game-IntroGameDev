@@ -7,4 +7,6 @@ public static class GameSettings
     public static int MapSizeX = 10;
     public static int MapSizeY = 8;
     public static List<ThingTypes> MapContents;
+    public static int playerX;
+    public static int playerY;
 }

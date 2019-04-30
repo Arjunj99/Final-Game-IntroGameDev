@@ -57,7 +57,8 @@ public enum EventType
     GetBumped,
     TakeDmg,
     PlayerInput,
-    GetName
+    GetName,
+    MonsterMove
 }
 
 public class KeyTrait : Trait
@@ -109,6 +110,7 @@ public class GainKeyAction : GameAction
     public override IEnumerator Run()
     {
         Key.View.transform.SetParent(Player.View.transform);
+        Debug.Log("Trait");
         Key.View.gameObject.SetActive(true);
         float timer = 0;
         Vector3 startPos = Key.View.transform.localPosition;
@@ -199,6 +201,7 @@ public class MonsterTrait : Trait
         Type = Traits.Monster;
         ListenFor.Add(EventType.GetBumped);
         ListenFor.Add(EventType.GetName);
+        ListenFor.Add(EventType.MonsterMove);
     }
 
     public override void TakeMsg(ActorModel who, EventMsg msg)
@@ -210,13 +213,74 @@ public class MonsterTrait : Trait
                 who.View.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
                 who.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
                 msg.Source.TakeMsg(new EventMsg(EventType.TakeDmg,who,God.Library.GetMonster(who.Species).Damage));
-                who.Despawn();
+                //who.Despawn();
                 return;
             case EventType.GetName:
                 msg.Text += " " + God.Library.GetMonster(who.Species).Type;
                 return;
+            case EventType.MonsterMove:
+                //Debug.Log("Move");
+                //who.Move()
+                int rand = Random.Range(0, 3);
+                Debug.Log(rand);
+                if (rand == 1) {
+                    if (who.Location.x > GameSettings.playerX)
+                    {
+                        who.Move(-1, 0);
+                    }
+                    else if (who.Location.x < GameSettings.playerX)
+                    {
+                        who.Move(1, 0);
+                    }
+                }
+                else if (rand == 0) {
+                    if (who.Location.y > GameSettings.playerY)
+                    {
+                        who.Move(0, -1);
+                    }
+                    else if (who.Location.y < GameSettings.playerY)
+                    {
+                        who.Move(0, 1);
+                    }
+                }
+                else if (rand == 2)
+                {
+                    if (who.Location.y > GameSettings.playerY)
+                    {
+                        who.Move(0, 0);
+                    }
+                    else if (who.Location.y < GameSettings.playerY)
+                    {
+                        who.Move(0,0);
+                    }
+                }
+                //who.Move(who.Location.x);
+                //if(who.Location.x == -(GameSettings.MapSizeX / 2)) {
+                //    who.Move((int)Random.Range(0, 1), 0);
+                //}
+                //if (who.Location.x == (GameSettings.MapSizeX / 2)) {
+                //    who.Move((int)Random.Range(-1, 0), 0);
+                //}
+                //if (who.Location.y == -(GameSettings.MapSizeY / 2)) {
+                //    who.Move(0, (int)Random.Range(0, 1));
+                //}
+                //if (who.Location.y == (GameSettings.MapSizeY / 2))
+                //{
+                //    who.Move(0, (int)Random.Range(-1, 0));
+                //}
+                //else {
+                //    who.Move(0, 0);
+                //} 
+
+                //if (who.Location.y > -(GameSettings.MapSizeY / 2) &&
+                //    who.Location.y < (GameSettings.MapSizeY / 2) &&
+                //    who.Location.x > -(GameSettings.MapSizeX / 2) &&
+                //    who.Location.x > (GameSettings.MapSizeX / 2)) {
+                //    who.Move((int)Random.Range(-1, 1), (int)Random.Range(-1, 1));
+                //}
+                return;
         }
-        
+
     }
 }
 
@@ -323,6 +387,7 @@ public class PlayerTrait : Trait
         Type = Traits.Player;
         ListenFor.Add(EventType.TakeDmg);
         ListenFor.Add(EventType.PlayerInput);
+        ListenFor.Add(EventType.MonsterMove);
         ListenFor.Add(EventType.GetName);
     }
 
@@ -338,6 +403,7 @@ public class PlayerTrait : Trait
             case EventType.PlayerInput:
                 if (msg.Dir == Inputs.Left)
                 {
+                    //Debug.Log(ModelManager.GetActor(who.ID));
                     who.Move(-1,0);
                 }
                 else if (msg.Dir == Inputs.Right)
@@ -352,13 +418,20 @@ public class PlayerTrait : Trait
                 {
                     who.Move(0,-1);
                 }
+                GameSettings.playerX = who.Location.x;
+                GameSettings.playerY = who.Location.y;
                 return;
             case EventType.GetName:
                 msg.Text += " PLAYER";
                 return;
+            //case EventType.MonsterMove:
+                //who.Move((int)Random.Range(-1, 1), (int)Random.Range(-1, 1));
+                //return;
         }
     }
 }
+
+
 
 public class TakeDamageAction : GameAction
 {

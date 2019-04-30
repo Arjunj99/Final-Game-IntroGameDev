@@ -26,18 +26,22 @@ public class Controller : MonoBehaviour
     {
         if (IM.Pressed(Inputs.Left))
         {
+            MsgAll(new EventMsg(EventType.MonsterMove, null, 0, Inputs.None));
             MsgAll(new EventMsg(Inputs.Left));
         }
         else if (IM.Pressed(Inputs.Right))
         {
+            MsgAll(new EventMsg(EventType.MonsterMove, null, 0, Inputs.None));
             MsgAll(new EventMsg(Inputs.Right));
         }
         else if (IM.Pressed(Inputs.Up))
         {
+            MsgAll(new EventMsg(EventType.MonsterMove, null, 0, Inputs.None));
             MsgAll(new EventMsg(Inputs.Up));
         }
         else if (IM.Pressed(Inputs.Down))
         {
+            MsgAll(new EventMsg(EventType.MonsterMove, null, 0, Inputs.None));
             MsgAll(new EventMsg(Inputs.Down));
         }
         
@@ -65,8 +69,12 @@ public class Controller : MonoBehaviour
 
     public void MsgAll(EventMsg msg)
     {
-        foreach(ActorModel am in ModelManager.GetActors())
+        foreach (ActorModel am in ModelManager.GetActors())
+        {
+            //Debug.Log(am);
             am.TakeMsg(msg);
+        }
+        
     }
 
     public void AddAction(GameAction a)

@@ -176,6 +176,7 @@ public class VanishAction : GameAction
 
     public override IEnumerator Run()
     {
+        Debug.Log("Actor");
         Who.View.gameObject.SetActive(false);
         yield return null;
     }
