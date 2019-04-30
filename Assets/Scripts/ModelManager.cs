@@ -50,8 +50,7 @@ public static class ModelManager
 
         List<TileModel> openTiles = new List<TileModel>();
         openTiles.AddRange(GetTiles());
-        foreach (ThingTypes t in GameSettings.MapContents)
-        {
+        foreach (ThingTypes t in GameSettings.MapContents) {
             if (openTiles.Count == 0)
                 break;
             TileModel rand = openTiles[Random.Range(0, openTiles.Count)];

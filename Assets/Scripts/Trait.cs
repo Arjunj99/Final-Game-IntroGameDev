@@ -210,8 +210,8 @@ public class MonsterTrait : Trait
         {
             case EventType.GetBumped:
                 God.C.AddAction(new BumpAction(msg.Source,who.Location.x,who.Location.y));
-                who.View.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
-                who.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+                //who.View.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+                //who.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
                 msg.Source.TakeMsg(new EventMsg(EventType.TakeDmg,who,God.Library.GetMonster(who.Species).Damage));
                 //who.Despawn();
                 return;
