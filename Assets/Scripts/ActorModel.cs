@@ -39,6 +39,9 @@ public class ActorModel {
             case ThingTypes.MagicDoor:
                 AddTrait(Traits.Door);
                 break;
+            case ThingTypes.Wall:
+                AddTrait(Traits.Wall);
+                break;
         }
     }
     
