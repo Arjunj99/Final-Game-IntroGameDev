@@ -44,6 +44,7 @@ public class ActorView : MonoBehaviour
     //When I'm destroyed make sure I destroy myself safely
     public void Despawn()
     {
+        Debug.Log("despawn");
         gameObject.SetActive(false);
 //        God.GSM.AllThings.Remove(this);
     }
