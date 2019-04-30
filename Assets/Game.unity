@@ -212,7 +212,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MapSize: {x: 10, y: 8}
-  MapContents: 010000000500000006000000040000000400000003000000030000000300000003000000040000000200000002000000020000000200000002000000020000000200000002000000
+  MapContents: 010000000500000006000000040000000400000003000000020000000200000002000000040000000200000002000000020000000200000002000000020000000200000002000000
 --- !u!4 &1220017443
 Transform:
   m_ObjectHideFlags: 0
@@ -406,7 +406,7 @@ PrefabInstance:
         type: 3}
       propertyPath: clip
       value: 
-      objectReference: {fileID: 8300000, guid: 125db2823cdb44544aae699adae1d12b, type: 3}
+      objectReference: {fileID: 8300000, guid: c382a2478d3ad6349931dc32d84877f3, type: 3}
     - target: {fileID: 7384187159483026827, guid: 57a72638f3950471387ccb914e5b82cb,
         type: 3}
       propertyPath: clip2
@@ -421,7 +421,19 @@ PrefabInstance:
         type: 3}
       propertyPath: clip4
       value: 
-      objectReference: {fileID: 8300000, guid: 711a32f4534e3421398ffa7505edc69c, type: 3}
+      objectReference: {fileID: 8300000, guid: c429ad6dd763048848937dad9ffcee0b, type: 3}
+    - target: {fileID: 7384187159483026827, guid: 57a72638f3950471387ccb914e5b82cb,
+        type: 3}
+      propertyPath: invert
+      value: 
+      objectReference: {fileID: 21300000, guid: 1e95ef9e050a84326ba447a63e1a9344,
+        type: 3}
+    - target: {fileID: 7384187159483026827, guid: 57a72638f3950471387ccb914e5b82cb,
+        type: 3}
+      propertyPath: revert
+      value: 
+      objectReference: {fileID: 21300000, guid: d6bbae88422504f4d85c6817d79a1798,
+        type: 3}
     - target: {fileID: 3561553576065437106, guid: 57a72638f3950471387ccb914e5b82cb,
         type: 3}
       propertyPath: m_AnchoredPosition.x

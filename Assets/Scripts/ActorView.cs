@@ -33,21 +33,22 @@ public class ActorView : MonoBehaviour
         gameObject.name = m.Type.ToString();
 //        if (!God.GSM.AllThings.Contains(this))
 //            God.GSM.AllThings.Add(this);
-        //if(m.Type == ThingTypes.Player) {
-        //    //Debug.Log("X is " + m.Location.x);
-        //    //Body = transform.Find("Body").GetComponent<SpriteRenderer>();
-        //    listener = gameObject.AddComponent<AudioListener>();
-        //    //listener = transform.Find("Body").GetComponent<AudioListener>();
-        //}
-        //if(m.Type == ThingTypes.Skeleton) {
-        //    source = gameObject.AddComponent<AudioSource>();
-        //    source.minDistance = 1f;
-        //    source.maxDistance = 1.7f;
-        //    source.spatialBlend = 1.0f;
-        //    source.rolloffMode = AudioRolloffMode.Linear;
-        //    clip1 = God.GSM.clip;
-        //    source.PlayOneShot(clip1);
-        //}
+        if(m.Type == ThingTypes.Player) {
+            //Debug.Log("X is " + m.Location.x);
+            //Body = transform.Find("Body").GetComponent<SpriteRenderer>();
+            listener = gameObject.AddComponent<AudioListener>();
+            //listener = transform.Find("Body").GetComponent<AudioListener>();
+        }
+        if(m.Type == ThingTypes.Skeleton) {
+            source = gameObject.AddComponent<AudioSource>();
+            source.minDistance = 1f;
+            source.maxDistance = 1.7f;
+            source.spatialBlend = 1.0f;
+            source.rolloffMode = AudioRolloffMode.Linear;
+            source.loop = true;
+            source.clip = God.GSM.clip;
+            source.Play();
+        }
         //if (m.Type == ThingTypes.MagicDoor)
         //{
         //    source = gameObject.AddComponent<AudioSource>();
@@ -105,11 +106,29 @@ public class ActorView : MonoBehaviour
     {
         if (Model.Type == ThingTypes.Player) {
             a.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+            a.Model.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().sprite = God.GSM.revert;
+            a.Model.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
         }
+        //else if ()
+        //{
+        //    a.Model.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 0);
+        //}
+        if (Model.Type == ThingTypes.MagicDoor) {
+            a.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+            a.Model.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().sprite = God.GSM.invert;
+            a.Model.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+        }
+        if (Model.Type == ThingTypes.RedKey)
+        {
+            a.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+            a.Model.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().sprite = God.GSM.invert;
+            a.Model.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+        }
+
 
         //if (Model.Type == ThingTypes.Skeleton) {
         //    ModelManager.AllTiles();
-            
+
         //    Debug.Log(a.Model.Location.x + ":" + a.Model.Location.y);
         //    //if()
         //}

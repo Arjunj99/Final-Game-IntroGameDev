@@ -28,8 +28,9 @@ public class TileView : MonoBehaviour
     }
 
     public void IncreaseVision(TileView t) {
-        if (gameObject.transform.Find("Player") == true) {
-            t.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+        if (gameObject.transform.Find("Player") != true) {
+            //Debug.Log("KILL");
+            t.GetComponentInChildren<SpriteRenderer>().sprite = God.GSM.invert;
             //Debug.Log(gameObject.transform.localPosition);
         }
         //if(t.Model.Neighbor(1,1).View.transform.Find(t.Model.Neighbor(1,1).View.name) == true) {

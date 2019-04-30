@@ -19,12 +19,13 @@ public abstract class Trait
 
 public enum Traits
 {
-    None=0,
-    Key=1,
-    Door=2,
-    Monster=3,
-    Score=4,
-    Player=5,
+    None = 0,
+    Key = 1,
+    Door = 2,
+    Monster = 3,
+    Score = 4,
+    Player = 5,
+    Wall = 6
 }
 
 public class EventMsg
@@ -58,7 +59,8 @@ public enum EventType
     TakeDmg,
     PlayerInput,
     GetName,
-    MonsterMove
+    MonsterMove,
+    WallStop
 }
 
 public class KeyTrait : Trait
@@ -76,8 +78,7 @@ public class KeyTrait : Trait
         {
             case EventType.GetBumped:
                 ActorModel bumper = msg.Source;
-                if (bumper.Type == ThingTypes.Player)
-                {
+                if (bumper.Type == ThingTypes.Player) {
                     TileModel loc = who.GetLocation();
                     bumper.HasKey = true;
                     who.LeaveTile(who.GetLocation());
@@ -85,7 +86,6 @@ public class KeyTrait : Trait
                     who.View.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
                     who.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
                     God.C.AddAction(new GainKeyAction(bumper,who));
-                    
                 }
                 return;
             case EventType.GetName:
@@ -221,39 +221,73 @@ public class MonsterTrait : Trait
             case EventType.MonsterMove:
                 //Debug.Log("Move");
                 //who.Move()
-                int rand = Random.Range(0, 3);
-                Debug.Log(rand);
-                if (rand == 1) {
-                    if (who.Location.x > GameSettings.playerX)
-                    {
-                        who.Move(-1, 0);
-                    }
-                    else if (who.Location.x < GameSettings.playerX)
-                    {
-                        who.Move(1, 0);
-                    }
+
+                if (God.GSM.monsterMovement < 3) {
+                    God.GSM.monsterMovement++;
                 }
-                else if (rand == 0) {
-                    if (who.Location.y > GameSettings.playerY)
+                else if (God.GSM.monsterMovement == 3) {
+                    int rand = Random.Range(0, 2);
+                    Debug.Log(rand);
+                    if (rand == 1)
                     {
-                        who.Move(0, -1);
+                        if (who.Location.x > GameSettings.playerX)
+                        {
+                            who.Move(-1, 0);
+                        }
+                        else if (who.Location.x < GameSettings.playerX)
+                        {
+                            who.Move(1, 0);
+                        }
                     }
-                    else if (who.Location.y < GameSettings.playerY)
+                    else if (rand == 0)
                     {
-                        who.Move(0, 1);
+                        if (who.Location.y > GameSettings.playerY)
+                        {
+                            who.Move(0, -1);
+                        }
+                        else if (who.Location.y < GameSettings.playerY)
+                        {
+                            who.Move(0, 1);
+                        }
                     }
+                    God.GSM.monsterMovement = 0;
                 }
-                else if (rand == 2)
-                {
-                    if (who.Location.y > GameSettings.playerY)
-                    {
-                        who.Move(0, 0);
-                    }
-                    else if (who.Location.y < GameSettings.playerY)
-                    {
-                        who.Move(0,0);
-                    }
-                }
+
+
+
+                //int rand = Random.Range(0, 3);
+                //Debug.Log(rand);
+                //if (rand == 1) {
+                //    if (who.Location.x > GameSettings.playerX)
+                //    {
+                //        who.Move(-1, 0);
+                //    }
+                //    else if (who.Location.x < GameSettings.playerX)
+                //    {
+                //        who.Move(1, 0);
+                //    }
+                //}
+                //else if (rand == 0) {
+                //    if (who.Location.y > GameSettings.playerY)
+                //    {
+                //        who.Move(0, -1);
+                //    }
+                //    else if (who.Location.y < GameSettings.playerY)
+                //    {
+                //        who.Move(0, 1);
+                //    }
+                //}
+                //else if (rand == 2)
+                //{
+                //    if (who.Location.y > GameSettings.playerY)
+                //    {
+                //        who.Move(0, 0);
+                //    }
+                //    else if (who.Location.y < GameSettings.playerY)
+                //    {
+                //        who.Move(0,0);
+                //    }
+                //}
                 //who.Move(who.Location.x);
                 //if(who.Location.x == -(GameSettings.MapSizeX / 2)) {
                 //    who.Move((int)Random.Range(0, 1), 0);
@@ -401,20 +435,20 @@ public class PlayerTrait : Trait
                 ModelManager.TakeDamage(amount);
                 return;
             case EventType.PlayerInput:
-                if (msg.Dir == Inputs.Left)
+                if (msg.Dir == Inputs.Left && God.GSM.wallLimit != 0)
                 {
                     //Debug.Log(ModelManager.GetActor(who.ID));
                     who.Move(-1,0);
                 }
-                else if (msg.Dir == Inputs.Right)
+                else if (msg.Dir == Inputs.Right && God.GSM.wallLimit != 1)
                 {
                     who.Move(1,0);
                 }
-                else if (msg.Dir == Inputs.Up)
+                else if (msg.Dir == Inputs.Up && God.GSM.wallLimit != 2)
                 {
                     who.Move(0,1);
                 }
-                else if (msg.Dir == Inputs.Down)
+                else if (msg.Dir == Inputs.Down && God.GSM.wallLimit != 3)
                 {
                     who.Move(0,-1);
                 }
@@ -427,6 +461,40 @@ public class PlayerTrait : Trait
             //case EventType.MonsterMove:
                 //who.Move((int)Random.Range(-1, 1), (int)Random.Range(-1, 1));
                 //return;
+        }
+    }
+}
+
+
+public class WallTrait : Trait
+{
+    public WallTrait()
+    {
+        Type = Traits.Wall;
+        ListenFor.Add(EventType.WallStop);
+    }
+
+    public override void TakeMsg(ActorModel who, EventMsg msg)
+    {
+        switch (msg.Type)
+        {
+            case EventType.WallStop:
+                int WallFace = Random.Range(0, 4);
+                switch(WallFace) {
+                    case(0):
+                        God.GSM.wallLimit = 0;
+                        return;
+                    case (1):
+                        God.GSM.wallLimit = 1;
+                        return;
+                    case (2):
+                        God.GSM.wallLimit = 2;
+                        return;
+                    case (3):
+                        God.GSM.wallLimit = 3;
+                        return;
+                }
+                return;
         }
     }
 }
