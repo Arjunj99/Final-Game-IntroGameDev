@@ -61,7 +61,9 @@ public enum EventType
     PlayerInput,
     GetName,
     MonsterMove,
-    WallStop
+    WallStop,
+    KeyMove,
+    ScoreMove
 }
 
 public class KeyTrait : Trait
@@ -71,26 +73,74 @@ public class KeyTrait : Trait
         Type = Traits.Key;
         ListenFor.Add(EventType.GetBumped);
         ListenFor.Add(EventType.GetName);
+        ListenFor.Add(EventType.KeyMove);
     }
 
     public override void TakeMsg(ActorModel who, EventMsg msg)
     {
+        bool key = false;
         switch (msg.Type)
         {
             case EventType.GetBumped:
-                ActorModel bumper = msg.Source;
-                if (bumper.Type == ThingTypes.Player) {
-                    TileModel loc = who.GetLocation();
-                    bumper.HasKey = true;
-                    who.LeaveTile(who.GetLocation());
-                    bumper.SetLocation(loc);
-                    who.View.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
-                    who.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
-                    God.C.AddAction(new GainKeyAction(bumper,who));
+                if (God.GSM.keyIsVisible) {
+                    ActorModel bumper = msg.Source;
+                    if (bumper.Type == ThingTypes.Player)
+                    {
+                        TileModel loc = who.GetLocation();
+                        bumper.HasKey = true;
+
+                        God.GSM.hasKey = true;
+                        Debug.Log("KEY IS " + key);
+                        who.LeaveTile(who.GetLocation());
+                        bumper.SetLocation(loc);
+                        who.View.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+                        who.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+                        God.C.AddAction(new GainKeyAction(bumper, who));
+                    }
                 }
                 return;
             case EventType.GetName:
                 msg.Text += " KEY";
+                return;
+            case EventType.KeyMove:
+                //Debug.Log("KEY IS MOVING");
+                if (!God.GSM.hasKey)
+                {
+
+                    if (God.GSM.keyMovement < God.GSM.monsterRound)
+                    {
+                        God.GSM.keyMovement++;
+                    }
+                    else if (God.GSM.keyMovement == God.GSM.monsterRound)
+                    {
+                        int rand = Random.Range(0, 2);
+                        Debug.Log(rand);
+                        if (rand == 1)
+                        {
+                            if (who.Location.x > GameSettings.playerX)
+                            {
+                                who.Move(-1, 0);
+                            }
+                            else if (who.Location.x < GameSettings.playerX)
+                            {
+                                who.Move(1, 0);
+                            }
+                        }
+                        else if (rand == 0)
+                        {
+                            if (who.Location.y > GameSettings.playerY)
+                            {
+                                who.Move(0, -1);
+                            }
+                            else if (who.Location.y < GameSettings.playerY)
+                            {
+                                who.Move(0, 1);
+                            }
+                        }
+                        //God.GSM.AS.PlayOneShot(God.GSM.StompClip);
+                        God.GSM.keyMovement = 0;
+                    }
+                }
                 return;
         }
         
@@ -210,10 +260,10 @@ public class MonsterTrait : Trait
         switch (msg.Type)
         {
             case EventType.GetBumped:
-                God.C.AddAction(new BumpAction(msg.Source,who.Location.x,who.Location.y));
+                God.C.AddAction(new BumpAction(msg.Source, who.Location.x, who.Location.y));
                 who.View.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
                 who.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
-                msg.Source.TakeMsg(new EventMsg(EventType.TakeDmg,who,God.Library.GetMonster(who.Species).Damage));
+                msg.Source.TakeMsg(new EventMsg(EventType.TakeDmg, who, God.Library.GetMonster(who.Species).Damage));
                 //who.Despawn();
                 return;
             case EventType.GetName:
@@ -223,10 +273,12 @@ public class MonsterTrait : Trait
                 //Debug.Log("Move");
                 //who.Move()
 
-                if (God.GSM.monsterMovement < God.GSM.monsterRound) {
+                if (God.GSM.monsterMovement < God.GSM.monsterRound)
+                {
                     God.GSM.monsterMovement++;
                 }
-                else if (God.GSM.monsterMovement == God.GSM.monsterRound) {
+                else if (God.GSM.monsterMovement == God.GSM.monsterRound)
+                {
                     int rand = Random.Range(0, 2);
                     Debug.Log(rand);
                     if (rand == 1)
@@ -254,6 +306,8 @@ public class MonsterTrait : Trait
                     God.GSM.AS.PlayOneShot(God.GSM.StompClip);
                     God.GSM.monsterMovement = 0;
                 }
+                return;
+        }
 
 
 
@@ -314,8 +368,8 @@ public class MonsterTrait : Trait
                 //    who.Location.x > (GameSettings.MapSizeX / 2)) {
                 //    who.Move((int)Random.Range(-1, 1), (int)Random.Range(-1, 1));
                 //}
-                return;
-        }
+        //        return;
+        //}
 
     }
 }
@@ -357,6 +411,7 @@ public class ScoreTrait : Trait
         Type = Traits.Score;
         ListenFor.Add(EventType.GetBumped);
         ListenFor.Add(EventType.GetName);
+        ListenFor.Add(EventType.ScoreMove);
     }
 
     public override void TakeMsg(ActorModel who, EventMsg msg)
@@ -367,17 +422,55 @@ public class ScoreTrait : Trait
                 ActorModel bumper = msg.Source;
                 if (bumper.Type == ThingTypes.Player)
                 {
-                    TileModel loc = who.GetLocation();
-                    who.View.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
-                    who.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
-                    God.C.AddAction(new GetScoreAction(bumper,who));
-                    who.Despawn();
-                    ModelManager.ChangeScore(1);
-                    bumper.SetLocation(loc);
+                    if (God.GSM.scoreIsVisible) {
+                        TileModel loc = who.GetLocation();
+                        who.View.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+                        who.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+                        God.C.AddAction(new GetScoreAction(bumper, who));
+                        who.Despawn();
+                        ModelManager.ChangeScore(1);
+                        bumper.SetLocation(loc);
+                    }
+
                 }
                 return;
             case EventType.GetName:
                 msg.Text += " SCORETHING";
+                return;
+            case EventType.ScoreMove:
+                if (God.GSM.scoreMovement < God.GSM.monsterRound)
+                {
+                    God.GSM.scoreMovement++;
+                }
+                else if (God.GSM.scoreMovement == God.GSM.monsterRound)
+                {
+                    int rand = Random.Range(0, 2);
+                    Debug.Log(rand);
+                    if (rand == 1)
+                    {
+                        if (who.Location.x > GameSettings.playerX)
+                        {
+                            who.Move(-1, 0);
+                        }
+                        else if (who.Location.x < GameSettings.playerX)
+                        {
+                            who.Move(1, 0);
+                        }
+                    }
+                    else if (rand == 0)
+                    {
+                        if (who.Location.y > GameSettings.playerY)
+                        {
+                            who.Move(0, -1);
+                        }
+                        else if (who.Location.y < GameSettings.playerY)
+                        {
+                            who.Move(0, 1);
+                        }
+                    }
+                    //God.GSM.AS.PlayOneShot(God.GSM.StompClip);
+                    God.GSM.scoreMovement = 0;
+                }
                 return;
         }
         

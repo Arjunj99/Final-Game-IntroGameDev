@@ -48,15 +48,48 @@ public static class ModelManager
             }
         }
 
+        //List<TileModel> openTiles = new List<TileModel>();
+        //openTiles.AddRange(GetTiles());
+        //foreach (ThingTypes t in GameSettings.MapContents)
+        //{
+        //    if (openTiles.Count == 0)
+        //        break;
+        //    if (t == ThingTypes.Wall) {
+        //        TileModel WallPlacement = openTiles[4];
+        //        openTiles.Remove(WallPlacement);
+        //        ActorModel a = new ActorModel(WallPlacement, t);
+        //    }
+        //    else {
+        //        TileModel rand = openTiles[Random.Range(0, openTiles.Count)];
+        //        openTiles.Remove(rand);
+        //        ActorModel a = new ActorModel(rand, t);
+        //    }
+
+        //}
+
+
+        // SEARCH "Odium" TO FIND WALL SPAWN
         List<TileModel> openTiles = new List<TileModel>();
         openTiles.AddRange(GetTiles());
+
+        TileModel WallPlacement = openTiles[10];
+        Debug.Log(WallPlacement.X + ":" + WallPlacement.Y);
+        openTiles.Remove(WallPlacement);
+        ActorModel actor = new ActorModel(WallPlacement, ThingTypes.Wall);
+
         foreach (ThingTypes t in GameSettings.MapContents) {
             if (openTiles.Count == 0)
                 break;
             TileModel rand = openTiles[Random.Range(0, openTiles.Count)];
             openTiles.Remove(rand);
+            Debug.Log(rand.X + ":" + rand.Y);
             ActorModel a = new ActorModel(rand,t);
         }
+        //TileModel WallPlacement = openTiles[4];
+        //Debug.Log(WallPlacement.X + ":" + WallPlacement.Y);
+        //openTiles.Remove(WallPlacement);
+        //ActorModel actor = new ActorModel(WallPlacement, ThingTypes.Wall);
+
     }
 
     public static void BuildView()

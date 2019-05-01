@@ -76,7 +76,10 @@ public class ActorModel {
             return;
         if (target.GetContents() != null)
         {
-            Debug.Log(target.GetContents());
+            //if (Type == ThingTypes.Player) {
+            //    Debug.Log(HasKey + "THIS MAN KEY PROTOCOL");
+            //}
+
             EventMsg bumpMsg = new EventMsg(EventType.GetBumped, this);
             target.GetContents().TakeMsg(bumpMsg);
 

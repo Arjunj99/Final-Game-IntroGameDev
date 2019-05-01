@@ -14,6 +14,8 @@ public class GSM : MonoBehaviour
     public AudioClip clip3;
     public AudioClip clip4;
     public int monsterMovement = 0;
+    public int keyMovement = 0;
+    public int scoreMovement = 0;
     public int monsterRound = 3;
     public Sprite black;
     public Sprite grey;
@@ -22,6 +24,10 @@ public class GSM : MonoBehaviour
     public RuntimeAnimatorController animator;
     public AudioClip StompClip;
     public AudioSource AS;
+    public bool hasKey = false;
+    public bool keyIsVisible = false;
+    public bool scoreIsVisible = false;
+    //public bool keyIsVisible = false;
     //public static GSM instance;
 
 

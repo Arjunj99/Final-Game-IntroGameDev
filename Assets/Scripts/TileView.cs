@@ -51,8 +51,18 @@ public class TileView : MonoBehaviour
             t.PlayerWasHere = true;
             //t.GetComponentInChildren<SpriteRenderer>().sprite = God.GSM.grey;
         }
+        else if (!t.transform.Find("Skeleton") || !t.transform.Find("RedKey") || !t.transform.Find("ScoreThing")) {
+            t.GetComponentInChildren<Animator>().enabled = false;
+                             //a.Model.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<Animator>().enabled = true;
 
-        if(t.PlayerWasHere && !t.transform.Find("Player")) {
+        }
+        if(t.transform.Find("Player")) {
+            t.GetComponentInChildren<Animator>().enabled = false;
+        }
+
+
+        if (t.PlayerWasHere && !t.transform.Find("Player")) {
+            //t.GetComponentInChildren<Animator>().enabled = false;
             t.GetComponentInChildren<SpriteRenderer>().sprite = God.GSM.grey;
         }
     }
