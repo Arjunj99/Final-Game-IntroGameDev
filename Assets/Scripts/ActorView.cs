@@ -15,6 +15,7 @@ public class ActorView : MonoBehaviour
     protected AudioClip clip3;
     protected AudioClip clip4;
     protected Animator animator;
+    protected Animator walkingAnim;
 
     
     
@@ -112,6 +113,8 @@ public class ActorView : MonoBehaviour
             a.Model.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().sprite = God.GSM.lightgrey;
             a.Model.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
             a.GetComponentInChildren<SpriteRenderer>().sortingOrder = 5;
+            walkingAnim = gameObject.AddComponent<Animator>();
+            walkingAnim.runtimeAnimatorController = God.GSM.walkingAnimation;
         }
         //else if ()
         //{

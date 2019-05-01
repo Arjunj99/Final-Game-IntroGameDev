@@ -22,6 +22,7 @@ public class GSM : MonoBehaviour
     public Sprite lightgrey;
     public int wallLimit = 5;
     public RuntimeAnimatorController animator;
+    public RuntimeAnimatorController walkingAnimation;
     public AudioClip StompClip;
     public AudioSource AS;
     public bool hasKey = false;
