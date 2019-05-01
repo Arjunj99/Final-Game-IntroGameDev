@@ -42,7 +42,7 @@ public class ActorView : MonoBehaviour
         if(m.Type == ThingTypes.Skeleton) {
             source = gameObject.AddComponent<AudioSource>();
             source.minDistance = 1f;
-            source.maxDistance = 1.7f;
+            source.maxDistance = 2.4f;
             source.spatialBlend = 1.0f;
             source.rolloffMode = AudioRolloffMode.Linear;
             source.loop = true;
@@ -106,8 +106,9 @@ public class ActorView : MonoBehaviour
     {
         if (Model.Type == ThingTypes.Player) {
             a.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
-            a.Model.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().sprite = God.GSM.revert;
+            a.Model.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().sprite = God.GSM.lightgrey;
             a.Model.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+            a.GetComponentInChildren<SpriteRenderer>().sortingOrder = 5;
         }
         //else if ()
         //{
@@ -115,13 +116,43 @@ public class ActorView : MonoBehaviour
         //}
         if (Model.Type == ThingTypes.MagicDoor) {
             a.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
-            a.Model.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().sprite = God.GSM.invert;
+            a.Model.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().sprite = God.GSM.grey;
             a.Model.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
         }
         if (Model.Type == ThingTypes.RedKey)
         {
             a.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
-            a.Model.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().sprite = God.GSM.invert;
+            a.Model.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().sprite = God.GSM.grey;
+            a.Model.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+        }
+        if (Model.Type == ThingTypes.Wall) {
+            a.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+        }
+        if (Model.Type == ThingTypes.SpecialWall) {
+            a.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+        }
+        if (Model.Type == ThingTypes.Skeleton) {
+            Debug.Log(a.Model.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().sprite.name);
+
+            if (a.Model.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().sprite.name == "Inverted Floor") {
+                //Debug.Log("THIS AINT WORKIN");
+                a.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 0);
+            }
+            else {
+                a.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+            }
+            //else if (a.Model.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().sprite.name == "Inverted Floor")
+            //{
+            //    a.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 0);
+            //}
+
+
+            //Debug.Log(a.Model.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().sprite.name);
+            //if (a.Model.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().name = "Grey")
+        }
+        if (Model.Type == ThingTypes.ScoreThing) {
+            a.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+            a.Model.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().sprite = God.GSM.grey;
             a.Model.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
         }
 

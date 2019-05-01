@@ -14,9 +14,11 @@ public class GSM : MonoBehaviour
     public AudioClip clip3;
     public AudioClip clip4;
     public int monsterMovement = 0;
-    public Sprite invert;
-    public Sprite revert;
-    public int wallLimit;
+    public int monsterRound = 3;
+    public Sprite black;
+    public Sprite grey;
+    public Sprite lightgrey;
+    public int wallLimit = 5;
     //public static GSM instance;
 
 

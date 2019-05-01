@@ -39,9 +39,9 @@ public class ActorModel {
             case ThingTypes.MagicDoor:
                 AddTrait(Traits.Door);
                 break;
-            case ThingTypes.Wall:
-                AddTrait(Traits.Wall);
-                break;
+            //case ThingTypes.Wall:
+                //AddTrait(Traits.Wall);
+                //break;
         }
     }
     
@@ -76,8 +76,17 @@ public class ActorModel {
             return;
         if (target.GetContents() != null)
         {
-            EventMsg bumpMsg = new EventMsg(EventType.GetBumped,this);
+            Debug.Log(target.GetContents());
+            EventMsg bumpMsg = new EventMsg(EventType.GetBumped, this);
             target.GetContents().TakeMsg(bumpMsg);
+
+            //if (!target.GetContents().View.transform.Find("SpecialWall")) {
+            //    EventMsg bumpMsg = new EventMsg(EventType.GetBumped, this);
+            //    target.GetContents().TakeMsg(bumpMsg);
+            //}
+            //else {
+            //    SetLocation(target);
+            //}
         }
         else
             SetLocation(target);
@@ -159,13 +168,14 @@ public class ActorModel {
 
 public enum ThingTypes
 {
-    None=0,
-    Player=1,
-    Wall=2,
-    Skeleton=3,
-    ScoreThing=4,
-    MagicDoor=5,
-    RedKey=6
+    None = 0,
+    Player = 1,
+    Wall = 2,
+    Skeleton = 3,
+    ScoreThing = 4,
+    MagicDoor = 5,
+    RedKey = 6,
+    SpecialWall = 7
 }
 
 public class VanishAction : GameAction

@@ -122,9 +122,16 @@ public static class ModelManager
     {
         Score += amt;
     }
-    
+
     public static void TakeDamage(int amt)
     {
+        if (God.GSM.monsterRound > 0) {
+            God.GSM.monsterRound -= 1;
+        }
+        else {
+            HP -= 10;
+        }
+        Debug.Log("Monster Round rn is " + God.GSM.monsterRound);
         HP -= amt;
         if (HP <= 0)
         {
