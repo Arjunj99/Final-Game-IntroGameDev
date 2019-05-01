@@ -279,7 +279,7 @@ MonoBehaviour:
   - A: 3
     B: {fileID: 21300000, guid: 0748c90de5feb4ed4a2cec2abd98427b, type: 3}
   - A: 4
-    B: {fileID: 21300000, guid: e6c53a426157c4a21b40463e74f81012, type: 3}
+    B: {fileID: 21300000, guid: 9a72898cbc55a5a4c9e884eca751ec58, type: 3}
   - A: 5
     B: {fileID: 21300000, guid: 59483da7129ac43e9b70dd1346ac9d7a, type: 3}
   - A: 6
@@ -694,6 +694,11 @@ PrefabInstance:
       propertyPath: StompClip
       value: 
       objectReference: {fileID: 8300000, guid: 10df1b74b17c241a68e69adb3c3c3a2e, type: 3}
+    - target: {fileID: 7384187159483026827, guid: 57a72638f3950471387ccb914e5b82cb,
+        type: 3}
+      propertyPath: walkingAnimation
+      value: 
+      objectReference: {fileID: 9100000, guid: b44da4c75dad9a0488ff8f75b1233c1d, type: 2}
     - target: {fileID: 3561553576065437106, guid: 57a72638f3950471387ccb914e5b82cb,
         type: 3}
       propertyPath: m_AnchoredPosition.x
