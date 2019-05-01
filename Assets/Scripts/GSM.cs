@@ -19,6 +19,9 @@ public class GSM : MonoBehaviour
     public Sprite grey;
     public Sprite lightgrey;
     public int wallLimit = 5;
+    public RuntimeAnimatorController animator;
+    public AudioClip StompClip;
+    public AudioSource AS;
     //public static GSM instance;
 
 

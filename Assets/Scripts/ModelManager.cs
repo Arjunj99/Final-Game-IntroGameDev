@@ -12,7 +12,7 @@ public static class ModelManager
     public static Dictionary<Guid,TileModel> AllTiles = new Dictionary<Guid, TileModel>();
     [System.NonSerialized]public static Dictionary<int, Dictionary<int, TileModel>> Tiles = new Dictionary<int, Dictionary<int, TileModel>>();
     public static int Score;
-    public static int HP = 10;
+    public static int HP = 4;
     public static SaveFile PendingSave;
     
     public static void OnLoad()
@@ -131,8 +131,10 @@ public static class ModelManager
         else {
             HP -= 10;
         }
-        Debug.Log("Monster Round rn is " + God.GSM.monsterRound);
-        HP -= amt;
+        //Debug.Log("Monster Round rn is " + God.GSM.monsterRound);
+        HP -= 1;
+
+        //HP -= amt;
         if (HP <= 0)
         {
             HP = 0;

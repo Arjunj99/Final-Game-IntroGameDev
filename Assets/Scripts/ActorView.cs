@@ -14,6 +14,7 @@ public class ActorView : MonoBehaviour
     protected AudioClip clip2;
     protected AudioClip clip3;
     protected AudioClip clip4;
+    protected Animator animator;
 
     
     
@@ -37,6 +38,8 @@ public class ActorView : MonoBehaviour
             //Debug.Log("X is " + m.Location.x);
             //Body = transform.Find("Body").GetComponent<SpriteRenderer>();
             listener = gameObject.AddComponent<AudioListener>();
+            animator = gameObject.AddComponent<Animator>();
+            animator.runtimeAnimatorController = God.GSM.animator;
             //listener = transform.Find("Body").GetComponent<AudioListener>();
         }
         if(m.Type == ThingTypes.Skeleton) {
@@ -117,6 +120,7 @@ public class ActorView : MonoBehaviour
         if (Model.Type == ThingTypes.MagicDoor) {
             a.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
             a.Model.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().sprite = God.GSM.grey;
+            //a.Model.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().sprite = God.GSM.grey;
             a.Model.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
         }
         if (Model.Type == ThingTypes.RedKey)

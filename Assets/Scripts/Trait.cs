@@ -251,6 +251,7 @@ public class MonsterTrait : Trait
                             who.Move(0, 1);
                         }
                     }
+                    God.GSM.AS.PlayOneShot(God.GSM.StompClip);
                     God.GSM.monsterMovement = 0;
                 }
 
