@@ -42,7 +42,7 @@ public class ActorView : MonoBehaviour
         if(m.Type == ThingTypes.Skeleton) {
             source = gameObject.AddComponent<AudioSource>();
             source.minDistance = 1f;
-            source.maxDistance = 1.7f;
+            source.maxDistance = 2.4f;
             source.spatialBlend = 1.0f;
             source.rolloffMode = AudioRolloffMode.Linear;
             source.loop = true;
