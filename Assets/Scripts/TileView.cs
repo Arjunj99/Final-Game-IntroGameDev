@@ -5,6 +5,8 @@ using UnityEngine;
 public class TileView : MonoBehaviour
 {
     public TileModel Model;
+    public bool PlayerWasHere = false;
+    public int wallFace = 5;
 
     public void Setup(TileModel m)
     {
@@ -25,12 +27,13 @@ public class TileView : MonoBehaviour
     public void Update()
     {
         IncreaseVision(this);
+        CheckIfPlayer(this);
     }
 
     public void IncreaseVision(TileView t) {
         if (gameObject.transform.Find("Player") != true) {
             //Debug.Log("KILL");
-            t.GetComponentInChildren<SpriteRenderer>().sprite = God.GSM.invert;
+            t.GetComponentInChildren<SpriteRenderer>().sprite = God.GSM.black;
             //Debug.Log(gameObject.transform.localPosition);
         }
         //if(t.Model.Neighbor(1,1).View.transform.Find(t.Model.Neighbor(1,1).View.name) == true) {
@@ -43,6 +46,30 @@ public class TileView : MonoBehaviour
         Debug.Log(tm.View.name);
     }
 
+    public void CheckIfPlayer(TileView t) {
+        if(t.transform.Find("Player")) {
+            t.PlayerWasHere = true;
+            //t.GetComponentInChildren<SpriteRenderer>().sprite = God.GSM.grey;
+        }
+
+        if(t.PlayerWasHere && !t.transform.Find("Player")) {
+            t.GetComponentInChildren<SpriteRenderer>().sprite = God.GSM.grey;
+        }
+    }
+
+    public void SetWall(TileView t) {
+        if (gameObject.transform.Find("Wall") == true)
+        {
+            t.wallFace = Random.Range(0, 4);
+        }
+
+        if (gameObject.transform.Find("Wall") && gameObject.transform.Find("Player")) {
+            God.GSM.wallLimit = t.wallFace;
+        }
+        else {
+            God.GSM.wallLimit = 5;
+        }
+    }
 
 
     

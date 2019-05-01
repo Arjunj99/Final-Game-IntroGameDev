@@ -25,7 +25,8 @@ public enum Traits
     Monster = 3,
     Score = 4,
     Player = 5,
-    Wall = 6
+    Wall = 6,
+    SpecialWall = 7
 }
 
 public class EventMsg
@@ -210,8 +211,8 @@ public class MonsterTrait : Trait
         {
             case EventType.GetBumped:
                 God.C.AddAction(new BumpAction(msg.Source,who.Location.x,who.Location.y));
-                //who.View.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
-                //who.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+                who.View.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+                who.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
                 msg.Source.TakeMsg(new EventMsg(EventType.TakeDmg,who,God.Library.GetMonster(who.Species).Damage));
                 //who.Despawn();
                 return;
@@ -222,10 +223,10 @@ public class MonsterTrait : Trait
                 //Debug.Log("Move");
                 //who.Move()
 
-                if (God.GSM.monsterMovement < 3) {
+                if (God.GSM.monsterMovement < God.GSM.monsterRound) {
                     God.GSM.monsterMovement++;
                 }
-                else if (God.GSM.monsterMovement == 3) {
+                else if (God.GSM.monsterMovement == God.GSM.monsterRound) {
                     int rand = Random.Range(0, 2);
                     Debug.Log(rand);
                     if (rand == 1)
@@ -466,22 +467,43 @@ public class PlayerTrait : Trait
 }
 
 
-public class WallTrait : Trait
+public class SpecialWallTrait : Trait
 {
-    public WallTrait()
+    public SpecialWallTrait()
     {
-        Type = Traits.Wall;
+        Type = Traits.SpecialWall;
+        ListenFor.Add(EventType.GetBumped);
+        ListenFor.Add(EventType.GetName);
         ListenFor.Add(EventType.WallStop);
     }
 
     public override void TakeMsg(ActorModel who, EventMsg msg)
     {
+        Debug.Log("trigger");
         switch (msg.Type)
         {
+            case EventType.GetBumped:
+                ActorModel bumper = msg.Source;
+                if (bumper.Type == ThingTypes.Player)
+                {
+                    Debug.Log("I touched player");
+                    TileModel loc = who.GetLocation();
+                    //bumper.HasKey = true;
+                    who.LeaveTile(who.GetLocation());
+                    bumper.SetLocation(loc);
+                    //who.View.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+                    //who.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+                    God.C.AddAction(new GainWallAction(bumper, who));
+                }
+                return;
+            case EventType.GetName:
+                msg.Text += " KEY";
+                return;
             case EventType.WallStop:
                 int WallFace = Random.Range(0, 4);
-                switch(WallFace) {
-                    case(0):
+                switch (WallFace)
+                {
+                    case (0):
                         God.GSM.wallLimit = 0;
                         return;
                     case (1):
@@ -496,9 +518,94 @@ public class WallTrait : Trait
                 }
                 return;
         }
+
     }
+
+
+
+
+    //public SpecialWallTrait()
+    //{
+    //    Type = Traits.Wall;
+    //    ListenFor.Add(EventType.GetBumped);
+    //    ListenFor.Add(EventType.GetName);
+    //    ListenFor.Add(EventType.WallStop);
+    //}
+
+    //public override void TakeMsg(ActorModel who, EventMsg msg)
+    //{
+    //    switch (msg.Type)
+    //    {
+    //        case EventType.GetBumped:
+    //            ActorModel bumper = msg.Source;
+    //            if (bumper.Type == ThingTypes.Player)
+    //            {
+    //                TileModel loc = who.GetLocation();
+    //                who.View.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+    //                who.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+    //                //God.C.AddAction(new GetScoreAction(bumper, who));
+    //                who.Despawn();
+    //                //ModelManager.ChangeScore(1);
+    //                //bumper.SetLocation(loc);
+    //            }
+    //            return;
+    //        case EventType.GetName:
+    //            msg.Text += " SPECIAL WALL";
+    //            return;
+    //        case EventType.WallStop:
+    //            int WallFace = Random.Range(0, 4);
+    //            switch(WallFace) {
+    //                case(0):
+    //                    God.GSM.wallLimit = 0;
+    //                    return;
+    //                case (1):
+    //                    God.GSM.wallLimit = 1;
+    //                    return;
+    //                case (2):
+    //                    God.GSM.wallLimit = 2;
+    //                    return;
+    //                case (3):
+    //                    God.GSM.wallLimit = 3;
+    //                    return;
+    //            }
+    //            return;
+    //    }
+    //}
 }
 
+public class GainWallAction : GameAction
+{
+    public ActorModel Player;
+    public ActorModel Wall;
+
+    public GainWallAction(ActorModel player, ActorModel wall)
+    {
+        Player = player;
+        Wall = wall;
+    }
+
+    public override IEnumerator Run()
+    {
+        Wall.View.transform.SetParent(Player.View.transform);
+        Debug.Log("Trait");
+        Wall.View.gameObject.SetActive(true);
+        float timer = 0;
+        Vector3 startPos = Wall.View.transform.localPosition;
+        Vector3 endPos = new Vector3(0.25f, 0.25f, -0.1f);
+        Vector3 startSize = Wall.View.transform.localScale;
+        Vector3 endSize = new Vector3(0.5f, 0.5f, 1);
+        while (timer < 1)
+        {
+            timer += Time.deltaTime / 0.2f;
+            float t = God.Ease(timer, true);
+            Wall.View.transform.localPosition = Vector3.Lerp(startPos, endPos, t);
+            Wall.View.transform.localScale = Vector3.Lerp(startSize, endSize, t);
+            yield return null;
+        }
+        Wall.View.transform.localPosition = endPos;
+        Wall.View.transform.localScale = endSize;
+    }
+}
 
 
 public class TakeDamageAction : GameAction

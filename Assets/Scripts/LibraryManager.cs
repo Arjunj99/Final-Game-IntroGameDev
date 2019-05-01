@@ -21,6 +21,7 @@ public class LibraryManager : MonoBehaviour
         new MonsterTrait().Setup();
         new ScoreTrait().Setup();
         new PlayerTrait().Setup();
+        new SpecialWallTrait().Setup();
     }
 
     void Update()
@@ -31,7 +32,9 @@ public class LibraryManager : MonoBehaviour
     public TileView SpawnTile(TileModel t)
     {
         TileView r = Instantiate(TileP).GetComponent<TileView>();
-        r.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 0);
+        r.GetComponentInChildren<SpriteRenderer>().sprite = God.GSM.black;
+
+        //r.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 0);
         r.Setup(t);
         return r;
     }
