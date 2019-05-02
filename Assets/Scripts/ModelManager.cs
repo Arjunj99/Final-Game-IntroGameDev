@@ -72,10 +72,54 @@ public static class ModelManager
         List<TileModel> openTiles = new List<TileModel>();
         openTiles.AddRange(GetTiles());
 
-        TileModel WallPlacement = openTiles[10];
-        Debug.Log(WallPlacement.X + ":" + WallPlacement.Y);
-        openTiles.Remove(WallPlacement);
-        ActorModel actor = new ActorModel(WallPlacement, ThingTypes.Wall);
+        int rando = Random.Range(0, 5);
+        switch (rando) {
+            case 0:
+                for (int i = 0; i < God.GSM.wallPreset1.Count; i++) {
+                    TileModel WallPlacement = openTiles[God.GSM.wallPreset1[i]];
+                    openTiles.Remove(WallPlacement);
+                    ActorModel actor = new ActorModel(WallPlacement, ThingTypes.Wall);
+                }
+                break;
+            case 1:
+                for (int i = 0; i < God.GSM.wallPreset2.Count; i++)
+                {
+                    TileModel WallPlacement = openTiles[God.GSM.wallPreset2[i]];
+                    openTiles.Remove(WallPlacement);
+                    ActorModel actor = new ActorModel(WallPlacement, ThingTypes.Wall);
+                }
+                break;
+            case 2:
+                for (int i = 0; i < God.GSM.wallPreset3.Count; i++)
+                {
+                    TileModel WallPlacement = openTiles[God.GSM.wallPreset3[i]];
+                    openTiles.Remove(WallPlacement);
+                    ActorModel actor = new ActorModel(WallPlacement, ThingTypes.Wall);
+                }
+                break;
+            case 3:
+                for (int i = 0; i < God.GSM.wallPreset4.Count; i++)
+                {
+                    TileModel WallPlacement = openTiles[God.GSM.wallPreset4[i]];
+                    openTiles.Remove(WallPlacement);
+                    ActorModel actor = new ActorModel(WallPlacement, ThingTypes.Wall);
+                }
+                break;
+            case 4:
+                for (int i = 0; i < God.GSM.wallPreset5.Count; i++)
+                {
+                    TileModel WallPlacement = openTiles[God.GSM.wallPreset5[i]];
+                    openTiles.Remove(WallPlacement);
+                    ActorModel actor = new ActorModel(WallPlacement, ThingTypes.Wall);
+                }
+                break;
+        }
+
+
+        //Addd THis in case it doesn't work
+        //TileModel WallPlacement = openTiles[10];
+        //openTiles.Remove(WallPlacement);
+        //ActorModel actor = new ActorModel(WallPlacement, ThingTypes.Wall);
 
         foreach (ThingTypes t in GameSettings.MapContents) {
             if (openTiles.Count == 0)

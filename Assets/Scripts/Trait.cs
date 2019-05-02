@@ -113,30 +113,38 @@ public class KeyTrait : Trait
                     }
                     else if (God.GSM.keyMovement == God.GSM.monsterRound)
                     {
-                        int rand = Random.Range(0, 2);
-                        Debug.Log(rand);
-                        if (rand == 1)
+                        int rand = Random.Range(0, 4);
+                        //Debug.Log(rand);
+                        if (rand == 0)
                         {
-                            if (who.Location.x > GameSettings.playerX)
-                            {
-                                who.Move(-1, 0);
-                            }
-                            else if (who.Location.x < GameSettings.playerX)
-                            {
-                                who.Move(1, 0);
-                            }
+                            who.Move(-1, 0);
+                        } else if (rand == 1) {
+                            who.Move(1, 0);
+                        } else if (rand == 2) {
+                            who.Move(0, -1);
+                        } else if (rand == 3) {
+                            who.Move(0, 1);
                         }
-                        else if (rand == 0)
-                        {
-                            if (who.Location.y > GameSettings.playerY)
-                            {
-                                who.Move(0, -1);
-                            }
-                            else if (who.Location.y < GameSettings.playerY)
-                            {
-                                who.Move(0, 1);
-                            }
-                        }
+                        //    if (who.Location.x > GameSettings.playerX)
+                        //    {
+                        //        who.Move(-1, 0);
+                        //    }
+                        //    else if (who.Location.x < GameSettings.playerX)
+                        //    {
+                        //        who.Move(1, 0);
+                        //    }
+                        //}
+                        //else if (rand == 0)
+                        //{
+                        //    if (who.Location.y > GameSettings.playerY)
+                        //    {
+                        //        who.Move(0, -1);
+                        //    }
+                        //    else if (who.Location.y < GameSettings.playerY)
+                        //    {
+                        //        who.Move(0, 1);
+                        //    }
+                        //}
                         //God.GSM.AS.PlayOneShot(God.GSM.StompClip);
                         God.GSM.keyMovement = 0;
                     }
@@ -444,30 +452,50 @@ public class ScoreTrait : Trait
                 }
                 else if (God.GSM.scoreMovement == God.GSM.monsterRound)
                 {
-                    int rand = Random.Range(0, 2);
-                    Debug.Log(rand);
-                    if (rand == 1)
+                    int rand = Random.Range(0, 4);
+                    //Debug.Log(rand);
+                    if (rand == 0)
                     {
-                        if (who.Location.x > GameSettings.playerX)
-                        {
-                            who.Move(-1, 0);
-                        }
-                        else if (who.Location.x < GameSettings.playerX)
-                        {
-                            who.Move(1, 0);
-                        }
+                        who.Move(-1, 0);
                     }
-                    else if (rand == 0)
+                    else if (rand == 1)
                     {
-                        if (who.Location.y > GameSettings.playerY)
-                        {
-                            who.Move(0, -1);
-                        }
-                        else if (who.Location.y < GameSettings.playerY)
-                        {
-                            who.Move(0, 1);
-                        }
+                        who.Move(1, 0);
                     }
+                    else if (rand == 2)
+                    {
+                        who.Move(0, -1);
+                    }
+                    else if (rand == 3)
+                    {
+                        who.Move(0, 1);
+                    }
+
+
+                    //int rand = Random.Range(0, 2);
+                    //Debug.Log(rand);
+                    //if (rand == 1)
+                    //{
+                    //    if (who.Location.x > GameSettings.playerX)
+                    //    {
+                    //        who.Move(-1, 0);
+                    //    }
+                    //    else if (who.Location.x < GameSettings.playerX)
+                    //    {
+                    //        who.Move(1, 0);
+                    //    }
+                    //}
+                    //else if (rand == 0)
+                    //{
+                    //    if (who.Location.y > GameSettings.playerY)
+                    //    {
+                    //        who.Move(0, -1);
+                    //    }
+                    //    else if (who.Location.y < GameSettings.playerY)
+                    //    {
+                    //        who.Move(0, 1);
+                    //    }
+                    //}
                     //God.GSM.AS.PlayOneShot(God.GSM.StompClip);
                     God.GSM.scoreMovement = 0;
                 }
@@ -748,6 +776,18 @@ public class DeathAction : GameAction
             Who.View.transform.Rotate(0,0,30);
             yield return null;
         }
-        God.GSM.SetText("You Died");
+        God.GSM.SetText("The End is Imminent");
+        timer = 0;
+        while (timer < 1)
+        {
+            timer += Time.deltaTime;
+            //size *= 1.2f;
+            //Who.View.transform.localScale = new Vector3(size, size, 1);
+            //Who.View.transform.Rotate(0, 0, 30);
+            yield return null;
+        }
+        God.GSM.SetText("Space to Try Again \n Score: " + ModelManager.Score);
+        God.GSM.tryAgain = true;
+
     }
 }

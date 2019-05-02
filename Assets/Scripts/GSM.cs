@@ -28,6 +28,12 @@ public class GSM : MonoBehaviour
     public bool hasKey = false;
     public bool keyIsVisible = false;
     public bool scoreIsVisible = false;
+    public List<int> wallPreset1 = new List<int>();
+    public List<int> wallPreset2 = new List<int>();
+    public List<int> wallPreset3 = new List<int>();
+    public List<int> wallPreset4 = new List<int>();
+    public List<int> wallPreset5 = new List<int>();
+    public bool tryAgain = false;
     //public bool keyIsVisible = false;
     //public static GSM instance;
 
@@ -63,6 +69,13 @@ public class GSM : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F12))
         {
+            ModelManager.HP = 4;
+            SceneManager.LoadScene("Game");
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space) && tryAgain)
+        {
+            ModelManager.HP = 4;
             SceneManager.LoadScene("Game");
         }
 

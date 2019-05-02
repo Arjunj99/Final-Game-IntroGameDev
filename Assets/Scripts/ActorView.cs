@@ -113,8 +113,10 @@ public class ActorView : MonoBehaviour
             a.Model.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().sprite = God.GSM.lightgrey;
             a.Model.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
             a.GetComponentInChildren<SpriteRenderer>().sortingOrder = 5;
-            walkingAnim = gameObject.AddComponent<Animator>();
-            walkingAnim.runtimeAnimatorController = God.GSM.walkingAnimation;
+            walkingAnim = gameObject.GetComponentInChildren<Animator>();
+            walkingAnim.enabled = true;
+            //walkingAnim.SetBool("Walking", true);
+            //walkingAnim.runtimeAnimatorController = God.GSM.walkingAnimation;
         }
         //else if ()
         //{
@@ -128,6 +130,10 @@ public class ActorView : MonoBehaviour
         }
         if (Model.Type == ThingTypes.RedKey)
         {
+            walkingAnim = gameObject.GetComponentInChildren<Animator>();
+            walkingAnim.enabled = true;
+            walkingAnim.SetBool("Key", true);
+
             if (a.Model.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().sprite.name == "Inverted Floor")
             {
                 a.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 0);
@@ -175,6 +181,11 @@ public class ActorView : MonoBehaviour
             //if (a.Model.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().name = "Grey")
         }
         if (Model.Type == ThingTypes.ScoreThing) {
+            walkingAnim = gameObject.GetComponentInChildren<Animator>();
+            walkingAnim.enabled = true;
+            //walkingAnim.SetBool("Spider", true);
+
+            walkingAnim.SetBool("BlackSpider", true);
 
             if (a.Model.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().sprite.name == "Inverted Floor")
             {
@@ -186,6 +197,7 @@ public class ActorView : MonoBehaviour
             {
                 a.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
                 God.GSM.scoreIsVisible = true;
+
             }
 
             //READD IF REVERT IS WANTED
