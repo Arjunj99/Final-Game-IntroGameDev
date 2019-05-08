@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5ea087a3997ab4ff8aac69235a71a66a, type: 3}
-  m_Name: Monster3
+  m_Name: FakeKey
   m_EditorClassIdentifier: 
-  Type: 7
-  S: {fileID: 21300000, guid: b10f990920451435d97f8599c8e7be97, type: 3}
-  Damage: 2
+  Type: 2
+  S: {fileID: 21300000, guid: 503c622494e4f49f582bf605f7f539c2, type: 3}
+  Vibration: 3

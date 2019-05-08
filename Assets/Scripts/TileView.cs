@@ -2,43 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TileView : MonoBehaviour
-{
+public class TileView : MonoBehaviour {
     public TileModel Model;
-    public bool PlayerWasHere = false;
-    public int wallFace = 5;
+    //public bool PlayerWasHere = false;
+    public int playerDuration = 0;
+    private int playerTrail = 6;
 
-    public void Setup(TileModel m)
-    {
+    public void Setup(TileModel m) {
         Model = m;
         m.View = this;
         transform.position = new Vector3(m.X,m.Y,0);
-//        God.GSM.AllTiles.Add(this);
-//        if (!God.GSM.Tiles.ContainsKey(m.X))
-//            God.GSM.Tiles.Add(m.X,new Dictionary<int, TileView>());
-//        God.GSM.Tiles[m.X].Add(m.Y,this);
     }
 
-    public void Start()
-    {
-        //CheckForObjects(this);
-    }
-
-    public void Update()
-    {
-        IncreaseVision(this);
+    public void Update() {
+        DecreaseVision(this);
         CheckIfPlayer(this);
+        //ControllerCheck(this);
     }
 
-    public void IncreaseVision(TileView t) {
+    public void DecreaseVision(TileView t) {
         if (gameObject.transform.Find("Player") != true) {
-            //Debug.Log("KILL");
-            t.GetComponentInChildren<SpriteRenderer>().sprite = God.GSM.black;
-            //Debug.Log(gameObject.transform.localPosition);
+            t.GetComponentInChildren<SpriteRenderer>().sprite = God.SM.black;
         }
-        //if(t.Model.Neighbor(1,1).View.transform.Find(t.Model.Neighbor(1,1).View.name) == true) {
-        //    Debug.Log("Monster Nearby");
-        //}
     }
 
     public void CheckForObjects(TileView t) {
@@ -48,40 +33,24 @@ public class TileView : MonoBehaviour
 
     public void CheckIfPlayer(TileView t) {
         if(t.transform.Find("Player")) {
-            t.PlayerWasHere = true;
-            //t.GetComponentInChildren<SpriteRenderer>().sprite = God.GSM.grey;
-        }
-        else if (!t.transform.Find("Skeleton") || !t.transform.Find("RedKey") || !t.transform.Find("ScoreThing")) {
+            t.playerDuration = playerTrail;
             t.GetComponentInChildren<Animator>().enabled = false;
-                             //a.Model.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<Animator>().enabled = true;
-
-        }
-        if(t.transform.Find("Player")) {
+        } else if (!t.transform.Find("Monster") || !t.transform.Find("RedKey") || !t.transform.Find("ScoreThing")) {
             t.GetComponentInChildren<Animator>().enabled = false;
         }
 
-
-        if (t.PlayerWasHere && !t.transform.Find("Player")) {
-            //t.GetComponentInChildren<Animator>().enabled = false;
-            t.GetComponentInChildren<SpriteRenderer>().sprite = God.GSM.grey;
+        if (t.playerDuration > 0 && !t.transform.Find("Player")) {
+            t.GetComponentInChildren<SpriteRenderer>().sprite = God.SM.grey;
         }
     }
 
-    public void SetWall(TileView t) {
-        if (gameObject.transform.Find("Wall") == true)
-        {
-            t.wallFace = Random.Range(0, 4);
-        }
-
-        if (gameObject.transform.Find("Wall") && gameObject.transform.Find("Player")) {
-            God.GSM.wallLimit = t.wallFace;
-        }
-        else {
-            God.GSM.wallLimit = 5;
+    public void ControllerCheck(TileView t) {
+        //if (God.GSM.LightSubtraction) {
+            if (t.playerDuration > 0) {
+                Debug.Log(t.Model.X + "/" + t.Model.Y + " " + t.playerDuration);
+                t.playerDuration--;
+                God.GSM.LightSubtraction = false;
+            //}
         }
     }
-
-
-    
-    
 }

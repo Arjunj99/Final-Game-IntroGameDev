@@ -148,7 +148,6 @@ MonoBehaviour:
   m_fontSizeMax: 6
   m_fontStyle: 0
   m_textAlignment: 257
-  m_isAlignmentEnumConverted: 1
   m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 0
@@ -175,6 +174,7 @@ MonoBehaviour:
   m_verticalMapping: 0
   m_uvLineOffset: 0
   m_geometrySortingOrder: 0
+  m_VertexBufferAutoSizeReduction: 1
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
@@ -189,12 +189,9 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
-  m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 1867496638514548447}
   m_subTextObjects:
@@ -254,9 +251,15 @@ MonoBehaviour:
   Cam: {fileID: 7384187159706799434}
   Text: {fileID: 7384187159806847531}
   ScoreTxt: {fileID: 284810070467385146}
-  Score: 0
-  AllThings: []
-  AllTiles: []
+  monsterMovement: 0
+  keyMovement: 0
+  scoreMovement: 0
+  monsterRound: 3
+  wallLimit: 5
+  hasKey: 0
+  keyIsVisible: 0
+  scoreIsVisible: 0
+  tryAgain: 0
 --- !u!1 &7384187159706799540
 GameObject:
   m_ObjectHideFlags: 0
@@ -303,9 +306,10 @@ Camera:
   m_ClearFlags: 1
   m_BackGroundColor: {r: 0.05, g: 0.05, b: 0.05, a: 0}
   m_projectionMatrixMode: 1
+  m_GateFitMode: 2
+  m_FOVAxisMode: 0
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
-  m_GateFitMode: 2
   m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
@@ -489,7 +493,6 @@ MonoBehaviour:
   m_fontSizeMax: 36
   m_fontStyle: 0
   m_textAlignment: 514
-  m_isAlignmentEnumConverted: 1
   m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 0
@@ -516,6 +519,7 @@ MonoBehaviour:
   m_verticalMapping: 0
   m_uvLineOffset: 0
   m_geometrySortingOrder: 0
+  m_VertexBufferAutoSizeReduction: 1
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
@@ -530,12 +534,9 @@ MonoBehaviour:
     lineCount: 0
     pageCount: 0
     materialCount: 1
-  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
-  m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 7384187159806847528}
   m_subTextObjects:

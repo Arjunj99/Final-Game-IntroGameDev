@@ -22,8 +22,7 @@ public static class IM {
     }
 }
 
-public enum Inputs
-{
+public enum Inputs {
     None=0,
     Up=1,
     Right=2,
