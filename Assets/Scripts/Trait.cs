@@ -26,7 +26,8 @@ public enum Traits
     Score = 4,
     Player = 5,
     Wall = 6,
-    SpecialWall = 7
+    Torches = 7,
+    FakeKey = 8
 }
 
 public class EventMsg
@@ -82,7 +83,7 @@ public class KeyTrait : Trait
         switch (msg.Type)
         {
             case EventType.GetBumped:
-                if (God.GSM.keyIsVisible) {
+                //if (God.GSM.keyIsVisible) {
                     ActorModel bumper = msg.Source;
                     if (bumper.Type == ThingTypes.Player)
                     {
@@ -97,7 +98,7 @@ public class KeyTrait : Trait
                         who.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
                         God.C.AddAction(new GainKeyAction(bumper, who));
                     }
-                }
+                //}
                 return;
             case EventType.GetName:
                 msg.Text += " KEY";
@@ -107,11 +108,11 @@ public class KeyTrait : Trait
                 if (!God.GSM.hasKey)
                 {
 
-                    if (God.GSM.keyMovement < God.GSM.monsterRound)
+                    if (who.View.movement < God.GSM.monsterRound)
                     {
-                        God.GSM.keyMovement++;
+                        who.View.movement++;
                     }
-                    else if (God.GSM.keyMovement == God.GSM.monsterRound)
+                    else if (who.View.movement == God.GSM.monsterRound)
                     {
                         int rand = Random.Range(0, 4);
                         //Debug.Log(rand);
@@ -125,33 +126,78 @@ public class KeyTrait : Trait
                         } else if (rand == 3) {
                             who.Move(0, 1);
                         }
-                        //    if (who.Location.x > GameSettings.playerX)
-                        //    {
-                        //        who.Move(-1, 0);
-                        //    }
-                        //    else if (who.Location.x < GameSettings.playerX)
-                        //    {
-                        //        who.Move(1, 0);
-                        //    }
-                        //}
-                        //else if (rand == 0)
-                        //{
-                        //    if (who.Location.y > GameSettings.playerY)
-                        //    {
-                        //        who.Move(0, -1);
-                        //    }
-                        //    else if (who.Location.y < GameSettings.playerY)
-                        //    {
-                        //        who.Move(0, 1);
-                        //    }
-                        //}
-                        //God.GSM.AS.PlayOneShot(God.GSM.StompClip);
-                        God.GSM.keyMovement = 0;
+                        who.View.movement = 0;
                     }
                 }
                 return;
         }
         
+    }
+}
+
+public class FakeKeyTrait : Trait
+{
+    public FakeKeyTrait()
+    {
+        Type = Traits.FakeKey;
+        ListenFor.Add(EventType.GetBumped);
+        ListenFor.Add(EventType.GetName);
+        ListenFor.Add(EventType.KeyMove);
+        ListenFor.Add(EventType.TakeDmg);
+    }
+
+    public override void TakeMsg(ActorModel who, EventMsg msg)
+    {
+        switch (msg.Type)
+        {
+            case EventType.GetBumped:
+                God.C.AddAction(new BumpAction(msg.Source, who.Location.x, who.Location.y));
+                who.View.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+                who.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+                msg.Source.TakeMsg(new EventMsg(EventType.TakeDmg, who, 2));
+                return;
+            case EventType.GetName:
+                msg.Text += " " + "FakeKey";
+                return;
+            case EventType.KeyMove:
+                //Debug.Log("Move");
+                //who.Move()
+
+                if (who.View.movement < God.GSM.monsterRound)
+                {
+                    //God.GSM.monsterMovement++;
+                }
+                else if (who.View.movement == God.GSM.monsterRound)
+                {
+                    int rand = Random.Range(0, 2);
+                    Debug.Log(rand);
+                    if (rand == 1)
+                    {
+                        if (who.Location.x > GameSettings.playerX)
+                        {
+                            who.Move(-1, 0);
+                        }
+                        else if (who.Location.x < GameSettings.playerX)
+                        {
+                            who.Move(1, 0);
+                        }
+                    }
+                    else if (rand == 0)
+                    {
+                        if (who.Location.y > GameSettings.playerY)
+                        {
+                            who.Move(0, -1);
+                        }
+                        else if (who.Location.y < GameSettings.playerY)
+                        {
+                            who.Move(0, 1);
+                        }
+                    }
+                    //God.GSM.AS.PlayOneShot(God.GSM.StompClip);
+                    who.View.movement = 0;
+                }
+                return;
+        }
     }
 }
 
@@ -209,7 +255,7 @@ public class DoorTrait : Trait
                 if (bumper.HasKey)
                  {
                      God.C.AddAction(new UseDoorAction(bumper,who));
-                     ModelManager.SaveGame();
+                     //ModelManager.SaveGame();
                  }
                  return;
              case EventType.GetName:
@@ -249,6 +295,8 @@ public class UseDoorAction : GameAction
             yield return null;
         }
         yield return new WaitForSeconds(0.2f);
+        God.Round++;
+        //Debug.Log(God.Round);
         SceneManager.LoadScene("Game");
     }
 }
@@ -271,7 +319,7 @@ public class MonsterTrait : Trait
                 God.C.AddAction(new BumpAction(msg.Source, who.Location.x, who.Location.y));
                 who.View.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
                 who.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
-                msg.Source.TakeMsg(new EventMsg(EventType.TakeDmg, who, God.Library.GetMonster(who.Species).Damage));
+                msg.Source.TakeMsg(new EventMsg(EventType.TakeDmg, who, God.Library.GetMonster(who.Species).Vibration));
                 //who.Despawn();
                 return;
             case EventType.GetName:
@@ -281,11 +329,10 @@ public class MonsterTrait : Trait
                 //Debug.Log("Move");
                 //who.Move()
 
-                if (God.GSM.monsterMovement < God.GSM.monsterRound)
-                {
-                    God.GSM.monsterMovement++;
+                if (who.View.movement < God.GSM.monsterRound) {
+                    who.View.movement++;
                 }
-                else if (God.GSM.monsterMovement == God.GSM.monsterRound)
+                else if (who.View.movement == God.GSM.monsterRound)
                 {
                     int rand = Random.Range(0, 2);
                     Debug.Log(rand);
@@ -311,8 +358,9 @@ public class MonsterTrait : Trait
                             who.Move(0, 1);
                         }
                     }
-                    God.GSM.AS.PlayOneShot(God.GSM.StompClip);
-                    God.GSM.monsterMovement = 0;
+                    //One I changed just now (Tanavast)
+                    //God.AM.AS.PlayOneShot(God.AM.StompClip);
+                    who.View.movement = 0;
                 }
                 return;
         }
@@ -430,7 +478,7 @@ public class ScoreTrait : Trait
                 ActorModel bumper = msg.Source;
                 if (bumper.Type == ThingTypes.Player)
                 {
-                    if (God.GSM.scoreIsVisible) {
+                    //if (God.GSM.scoreIsVisible) {
                         TileModel loc = who.GetLocation();
                         who.View.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
                         who.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
@@ -438,7 +486,7 @@ public class ScoreTrait : Trait
                         who.Despawn();
                         ModelManager.ChangeScore(1);
                         bumper.SetLocation(loc);
-                    }
+                    //}
 
                 }
                 return;
@@ -446,11 +494,11 @@ public class ScoreTrait : Trait
                 msg.Text += " SCORETHING";
                 return;
             case EventType.ScoreMove:
-                if (God.GSM.scoreMovement < God.GSM.monsterRound)
+                if (who.View.movement < God.GSM.monsterRound)
                 {
-                    God.GSM.scoreMovement++;
+                    who.View.movement++;
                 }
-                else if (God.GSM.scoreMovement == God.GSM.monsterRound)
+                else if (who.View.movement == God.GSM.monsterRound)
                 {
                     int rand = Random.Range(0, 4);
                     //Debug.Log(rand);
@@ -497,7 +545,7 @@ public class ScoreTrait : Trait
                     //    }
                     //}
                     //God.GSM.AS.PlayOneShot(God.GSM.StompClip);
-                    God.GSM.scoreMovement = 0;
+                    who.View.movement = 0;
                 }
                 return;
         }
@@ -555,7 +603,7 @@ public class PlayerTrait : Trait
             case EventType.TakeDmg:
                 int amount = msg.Amount;
                 God.C.AddAction(new TakeDamageAction(who,amount));
-                ModelManager.TakeDamage(amount);
+                ModelManager.TakeDamage();
                 return;
             case EventType.PlayerInput:
                 if (msg.Dir == Inputs.Left && God.GSM.wallLimit != 0)
@@ -575,8 +623,12 @@ public class PlayerTrait : Trait
                 {
                     who.Move(0,-1);
                 }
+                foreach (TileModel tm in ModelManager.GetTiles()) {
+                    tm.View.ControllerCheck(tm.View);
+                }
                 GameSettings.playerX = who.Location.x;
                 GameSettings.playerY = who.Location.y;
+                God.GSM.currentMoves++;
                 return;
             case EventType.GetName:
                 msg.Text += " PLAYER";
@@ -589,59 +641,59 @@ public class PlayerTrait : Trait
 }
 
 
-public class SpecialWallTrait : Trait
-{
-    public SpecialWallTrait()
-    {
-        Type = Traits.SpecialWall;
-        ListenFor.Add(EventType.GetBumped);
-        ListenFor.Add(EventType.GetName);
-        ListenFor.Add(EventType.WallStop);
-    }
+//public class SpecialWallTrait : Trait
+//{
+    //public SpecialWallTrait()
+    //{
+    //    Type = Traits.SpecialWall;
+    //    ListenFor.Add(EventType.GetBumped);
+    //    ListenFor.Add(EventType.GetName);
+    //    ListenFor.Add(EventType.WallStop);
+    //}
 
-    public override void TakeMsg(ActorModel who, EventMsg msg)
-    {
-        Debug.Log("trigger");
-        switch (msg.Type)
-        {
-            case EventType.GetBumped:
-                ActorModel bumper = msg.Source;
-                if (bumper.Type == ThingTypes.Player)
-                {
-                    Debug.Log("I touched player");
-                    TileModel loc = who.GetLocation();
-                    //bumper.HasKey = true;
-                    who.LeaveTile(who.GetLocation());
-                    bumper.SetLocation(loc);
-                    //who.View.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
-                    //who.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
-                    God.C.AddAction(new GainWallAction(bumper, who));
-                }
-                return;
-            case EventType.GetName:
-                msg.Text += " KEY";
-                return;
-            case EventType.WallStop:
-                int WallFace = Random.Range(0, 4);
-                switch (WallFace)
-                {
-                    case (0):
-                        God.GSM.wallLimit = 0;
-                        return;
-                    case (1):
-                        God.GSM.wallLimit = 1;
-                        return;
-                    case (2):
-                        God.GSM.wallLimit = 2;
-                        return;
-                    case (3):
-                        God.GSM.wallLimit = 3;
-                        return;
-                }
-                return;
-        }
+    //public override void TakeMsg(ActorModel who, EventMsg msg)
+    //{
+    //    Debug.Log("trigger");
+    //    switch (msg.Type)
+    //    {
+    //        case EventType.GetBumped:
+    //            ActorModel bumper = msg.Source;
+    //            if (bumper.Type == ThingTypes.Player)
+    //            {
+    //                Debug.Log("I touched player");
+    //                TileModel loc = who.GetLocation();
+    //                //bumper.HasKey = true;
+    //                who.LeaveTile(who.GetLocation());
+    //                bumper.SetLocation(loc);
+    //                //who.View.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+    //                //who.View.transform.GetComponentInParent<TileView>().GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+    //                God.C.AddAction(new GainWallAction(bumper, who));
+    //            }
+    //            return;
+    //        case EventType.GetName:
+    //            msg.Text += " KEY";
+    //            return;
+    //        case EventType.WallStop:
+    //            int WallFace = Random.Range(0, 4);
+    //            switch (WallFace)
+    //            {
+    //                case (0):
+    //                    God.GSM.wallLimit = 0;
+    //                    return;
+    //                case (1):
+    //                    God.GSM.wallLimit = 1;
+    //                    return;
+    //                case (2):
+    //                    God.GSM.wallLimit = 2;
+    //                    return;
+    //                case (3):
+    //                    God.GSM.wallLimit = 3;
+    //                    return;
+    //            }
+    //            return;
+    //    }
 
-    }
+    //}
 
 
 
@@ -693,7 +745,7 @@ public class SpecialWallTrait : Trait
     //            return;
     //    }
     //}
-}
+//}
 
 public class GainWallAction : GameAction
 {
@@ -768,6 +820,7 @@ public class DeathAction : GameAction
     {
         float timer = 0;
         float size = Who.View.transform.localScale.x;
+        Who.View.GetComponentInChildren<SpriteRenderer>().sortingOrder = 10;
         while (timer < 1)
         {
             timer += Time.deltaTime;

@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5ea087a3997ab4ff8aac69235a71a66a, type: 3}
-  m_Name: Monster1
+  m_Name: Tybault
   m_EditorClassIdentifier: 
-  Type: 2
+  Type: 1
   S: {fileID: 21300000, guid: b10f990920451435d97f8599c8e7be97, type: 3}
-  Damage: 5
+  Vibration: 5
