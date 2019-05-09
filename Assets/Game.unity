@@ -456,7 +456,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 937921ba561f743e083c3422b31ffb63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  black: {fileID: 21300000, guid: 0ae154fcc80b24efb8367cadfff802a1, type: 3}
+  black: {fileID: 21300000, guid: 834a9457181f44e68b6249be46e1e4a9, type: 3}
   grey: {fileID: 21300000, guid: 4634e007a6efb465cad378ac5cc3cb01, type: 3}
   lightgrey: {fileID: 21300000, guid: 7025da7b7db084c2e8331b00dfe90c98, type: 3}
   wallTop: {fileID: 21300000, guid: 67573aec0a3c54cd09fe738ad5207c3f, type: 3}
